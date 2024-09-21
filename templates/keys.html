@@ -15,7 +15,7 @@
         <!-- Total Balance Section -->
         <div class="total-balance-section mb-4">
             <div class="row">
-                <div class="col-md-12 d-flex align-items-center justify-content-start">
+                <div class="col-12 d-flex align-items-center justify-content-start">
                     <div class="total-balance-info">
                         <div class="badge badge-secondary">
                             <i class="cf cf-btc"></i> Total balance:
@@ -42,10 +42,8 @@
         <!-- Navigation Bar and Search Section -->
         <div class="navigation-bar">
             <div class="row">
-                <!-- Navigation and Page Section -->
-                <div class="col-md-12 d-flex align-items-center">
-                    <div class="navigation-buttons mr-3">
-                        <!-- Navigation Buttons -->
+                <div class="col-12 d-flex flex-column flex-md-row align-items-center">
+                    <div class="navigation-buttons mr-3 mb-2 mb-md-0">
                         <a href="/keys/1" class="btn btn-outline-secondary">&laquo; First</a>
                         {% if page > 1 %}
                             <a href="/keys/{{ page - 1 }}" class="btn btn-outline-secondary">&larr; Previous</a>
@@ -58,26 +56,26 @@
                     </div>
 
                     <!-- Page Jump Input -->
-                    <form id="pageForm" class="form-inline">
+                    <form id="pageForm" class="form-inline flex-column flex-md-row">
                         <label for="pageInput" class="mr-2">Page:</label>
-                        <input type="number" id="pageInput" name="page" value="{{ page }}" class="form-control mr-2" style="width: 800px;">
-                        <button type="button" class="btn btn-primary" onclick="goToPage()">Jump</button>
+                        <input type="number" id="pageInput" name="page" value="{{ page }}" class="form-control mr-2 col-12 col-md-8">
+                        <button type="button" class="btn btn-primary col-12 col-md-auto" onclick="goToPage()">Jump</button>
                     </form>
                 </div>
             </div>
         </div>
 
         <!-- Search Input for HEX/WIF -->
-        <div class="col-md-12 text-right pb-2">
-            <form action="/search" method="get" class="form-inline search">
+        <div class="col-12 text-right pb-2">
+            <form action="/search" method="get" class="form-inline search flex-column flex-md-row">
                 <label for="searchInput" class="mr-2">Private Key:</label>
-                <input type="text" id="searchInput" name="query" placeholder="HEX or WIF" class="form-control mr-2 search" style="width: 1000px;">
-                <button type="submit" class="btn btn-primary">Search</button>
+                <input type="text" id="searchInput" name="query" placeholder="HEX or WIF" class="form-control mr-2 search col-12 col-md-8">
+                <button type="submit" class="btn btn-primary col-12 col-md-auto">Search</button>
             </form>
         </div>
 
         <!-- Table of Keys and Addresses -->
-        <div class="table-wrapper">
+        <div class="table-responsive">
             <table class="table table-bordered">
                 <thead class="thead-light">
                     <tr>
