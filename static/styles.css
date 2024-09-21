@@ -1,0 +1,134 @@
+body {
+    background-color: #f8f9fa;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.75rem;
+}
+
+.container-fluid {
+    margin-top: 20px;
+    max-width: 95%;
+}
+
+.table-wrapper {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+    color: #1abc9c;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+table {
+    width: 100%;
+    text-align: center;
+}
+
+thead th {
+    background-color: #1abc9c;
+    color: white;
+    font-size: 1rem;
+}
+
+td {
+    vertical-align: middle;
+}
+
+.badge {
+    font-size: 0.7rem;
+    margin-right: 5px;
+}
+
+.icon {
+    width: 14px;
+    margin-right: 5px;
+}
+
+.pagination-wrapper {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination .page-link {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #16a085;
+}
+
+.page-link {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+}
+
+/* Navigation Bar Styles */
+.navigation-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.navigation-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.form-inline {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.form-inline input {
+    width: 100px;
+    height: 30px;
+    font-size: 0.85rem;
+}
+
+.form-inline.search input {
+    width: 200px;
+    height: 30px;
+}
+
+.random-btn {
+    background-color: #f8f9fa;
+    border: 1px solid #6c757d;
+    color: #6c757d;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 5px;
+}
+
+.random-btn:hover {
+    background-color: #e9ecef;
+    border-color: #6c757d;
+}
+
+/* Page Jump and Search Button Styles */
+.form-inline button {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    font-size: 0.85rem;
+    border-radius: 5px;
+    margin-left: 5px;
+}
+
+.form-inline button:hover {
+    background-color: #16a085;
+}
+
+
+
+.form-inline input::placeholder {
+    color: #6c757d;
+}

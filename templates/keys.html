@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة المفاتيح</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="mt-5">قائمة المفاتيح</h1>
+
+        <!-- Total Balance Section -->
+        <div class="total-balance-section mb-4">
+            <div class="row">
+                <div class="col-md-12 d-flex align-items-center justify-content-start">
+                    <div class="total-balance-info">
+                        <div class="badge badge-secondary">
+                            <i class="cf cf-btc"></i> Total balance:
+                            <span class="badge 
+                                {% if total_balance > 0 %} badge-danger 
+                                {% else %} badge-light 
+                                {% endif %} p-1"> 
+                                {{ total_balance }} BTC
+                            </span>
+                        </div>                        
+                        <div class="badge badge-info ml-3">
+                            <i class="fa fa-money"></i> Total received:
+                            <span class="badge badge-light p-1">{{ total_received }} BTC</span>
+                        </div>
+                        <div class="badge badge-warning ml-3">
+                            <i class="fa fa-exchange"></i> Total TX:
+                            <span class="badge badge-light p-1">{{ total_tx }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Bar and Search Section -->
+        <div class="navigation-bar">
+            <div class="row">
+                <!-- Navigation and Page Section -->
+                <div class="col-md-12 d-flex align-items-center">
+                    <div class="navigation-buttons mr-3">
+                        <!-- Navigation Buttons -->
+                        <a href="/keys/1" class="btn btn-outline-secondary">&laquo; First</a>
+                        {% if page > 1 %}
+                            <a href="/keys/{{ page - 1 }}" class="btn btn-outline-secondary">&larr; Previous</a>
+                        {% else %}
+                            <button class="btn btn-outline-secondary" disabled>&larr; Previous</button>
+                        {% endif %}
+                        <a href="/keys/random" class="btn random-btn ml-2">Random</a>
+                        <a href="/keys/{{ page + 1 }}" class="btn btn-outline-secondary">Next &rarr;</a>
+                        <a href="/keys/{{ total_pages }}" class="btn btn-outline-secondary">Last &raquo;</a>
+                    </div>
+
+                    <!-- Page Jump Input -->
+                    <form id="pageForm" class="form-inline">
+                        <label for="pageInput" class="mr-2">Page:</label>
+                        <input type="number" id="pageInput" name="page" value="{{ page }}" class="form-control mr-2" style="width: 800px;">
+                        <button type="button" class="btn btn-primary" onclick="goToPage()">Jump</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Input for HEX/WIF -->
+        <div class="col-md-12 text-right pb-2">
+            <form action="/search" method="get" class="form-inline search">
+                <label for="searchInput" class="mr-2">Private Key:</label>
+                <input type="text" id="searchInput" name="query" placeholder="HEX or WIF" class="form-control mr-2 search" style="width: 1000px;">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+
+        <!-- Table of Keys and Addresses -->
+        <div class="table-wrapper">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Private Key</th>
+                        <th>Address</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key in keys %}
+                    <tr>
+                        <!-- Private Keys -->
+                        <td>
+                            <p><strong>HEX:</strong> {{ key.hex }}</p>
+                            <p><strong>WIF(C):</strong> {{ key.wif_compressed }}</p>
+                            <p><strong>WIF(U):</strong> {{ key.wif_uncompressed }}</p>
+                        </td>
+
+                        <!-- Public Addresses -->
+                        <td>
+                            <p><strong>P2PKH(C):</strong> <a href="https://www.blockchain.com/explorer/addresses/btc/{{ key.p2pkh_compressed_address }}" target="_blank">{{ key.p2pkh_compressed_address }}</a></p>
+                            <p><strong>P2PKH(U):</strong> <a href="https://www.blockchain.com/explorer/addresses/btc/{{ key.p2pkh_uncompressed_address }}" target="_blank">{{ key.p2pkh_uncompressed_address }}</a></p>
+                            <p><strong>P2SH(C):</strong> <a href="https://www.blockchain.com/explorer/addresses/btc/{{ key.p2sh_address }}" target="_blank">{{ key.p2sh_address }}</a></p>
+                            <p><strong>BECH32(C):</strong> <a href="https://www.blockchain.com/explorer/addresses/btc/{{ key.bech32_address }}" target="_blank">{{ key.bech32_address }}</a></p>
+                        </td>
+
+                        <!-- Balances -->
+                        <td>
+                            <div class="badge 
+                                {% if key.p2pkh_compressed_balance > 0 %} badge-danger 
+                                {% else %} badge-light 
+                                {% endif %} p-1 m-0">
+                                <i class="cf cf-btc"></i> {{ key.p2pkh_compressed_balance }} BTC
+                            </div>
+                            <div class="badge badge-light p-1 m-0 bg-warning text-white">
+                                <i class="fa fa-exchange" aria-hidden="true"></i> {{ key.p2pkh_compressed_tx_count }}
+                            </div>
+                            <div class="badge badge-light p-1 m-0 bg-info text-white">
+                                <i class="cf cf-btc"></i> {{ key.p2pkh_compressed_received }} satoshi
+                            </div>
+                            <br>
+                            <div class="badge 
+                                {% if key.p2pkh_uncompressed_balance > 0 %} badge-danger 
+                                {% else %} badge-light 
+                                {% endif %} p-1 m-0">
+                                <i class="cf cf-btc"></i> {{ key.p2pkh_uncompressed_balance }} BTC
+                            </div>
+                            <div class="badge badge-light p-1 m-0 bg-warning text-white">
+                                <i class="fa fa-exchange" aria-hidden="true"></i> {{ key.p2pkh_uncompressed_tx_count }}
+                            </div>
+                            <div class="badge badge-light p-1 m-0 bg-info text-white">
+                                <i class="cf cf-btc"></i> {{ key.p2pkh_uncompressed_received }} satoshi
+                            </div>
+                            <br>
+                            <div class="badge 
+                                {% if key.p2sh_balance > 0 %} badge-danger 
+                                {% else %} badge-light 
+                                {% endif %} p-1 m-0">
+                                <i class="cf cf-btc"></i> {{ key.p2sh_balance }} BTC
+                            </div>
+                            <div class="badge badge-light p-1 m-0 bg-warning text-white">
+                                <i class="fa fa-exchange" aria-hidden="true"></i> {{ key.p2sh_tx_count }}
+                            </div>
+                            <div class="badge badge-light p-1 m-0 bg-info text-white">
+                                <i class="cf cf-btc"></i> {{ key.p2sh_received }} satoshi
+                            </div>
+                            <br>
+                            <div class="badge 
+                                {% if key.bech32_balance > 0 %} badge-danger 
+                                {% else %} badge-light 
+                                {% endif %} p-1 m-0">
+                                <i class="cf cf-btc"></i> {{ key.bech32_balance }} BTC
+                            </div>
+                            <div class="badge badge-light p-1 m-0 bg-warning text-white">
+                                <i class="fa fa-exchange" aria-hidden="true"></i> {{ key.bech32_tx_count }}
+                            </div>
+                            <div class="badge badge-light p-1 m-0 bg-info text-white">
+                                <i class="cf cf-btc"></i> {{ key.bech32_received }} satoshi
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Pagination for Previous/Next -->
+            <div class="pagination-wrapper">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="/keys/{{ page - 1 }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo; السابق</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="page-item">
+                            <a class="page-link" href="/keys/{{ page + 1 }}" aria-label="Next">
+                                <span aria-hidden="true">التالي &raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    function goToPage() {
+        var page = document.getElementById("pageInput").value;
+        if (page) {
+            // Redirect to the new URL with the key as part of the URL path
+            window.location.href = '/keys/' + page;
+        }
+    }
+</script>
