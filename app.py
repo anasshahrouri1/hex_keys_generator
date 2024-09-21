@@ -8,7 +8,7 @@ import base58
 import bech32
 import random
 from bitcoin import SelectParams
-
+import os
 # Select Bitcoin mainnet parameters (assuming you are using bitcoin-python for something else)
 SelectParams('mainnet')
 
@@ -287,4 +287,5 @@ def wif_to_hex(wif):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))  # Use the port provided by Render or default to 5000
+    app.run(host='0.0.0.0', port=port, debug=True)
